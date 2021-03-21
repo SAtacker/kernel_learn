@@ -14,4 +14,47 @@ Create an SPI bus driver which uses bit banging on an FTDI (or similar) USB inte
 Make sure that the driver can be used with spi-tools.
 ```
 
+### Getting Started
 
+* Cloning and building the module
+
+```sh
+git clone https://github.com/SAtacker/kernel_learn.git
+cd Kernel_Challenge/
+make
+```
+
+* Loading the kernel module
+
+```sh
+sudo insmod char_ddriver.ko
+```
+
+### Methodology and Testing
+
+The userspace program initially opens the device `/dev/char_ddriver` and sends the user non-formatted input to the device. The LKM echoes back the received buffer. After that user space program uses `ioctl` for i/o with kernel space and echoes back the user input.
+
+```sh
+./test
+```
+
+### Output
+
+- Logs
+
+```sh
+tail -20f /var/log/kern.log
+```
+
+### Removal of module
+
+```
+sudo rmmod char_ddriver
+```
+
+### Further additions
+
+- [x] IOCTL calls 
+- [ ] Checksum Function
+- [ ] Procfs entry
+- [ ] Task 2
