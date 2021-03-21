@@ -46,6 +46,32 @@ The userspace program initially opens the device `/dev/char_ddriver` and sends t
 tail -20f /var/log/kern.log
 ```
 
+```
+Mar 21 11:30:33 ubuntu kernel: [35966.145900] char_ddriver : Initializing 
+Mar 21 11:30:33 ubuntu kernel: [35966.145908] char_ddriver : Registered with major number 507
+Mar 21 11:30:33 ubuntu kernel: [35966.146025] char_ddriver : Device created 
+Mar 21 11:30:54 ubuntu kernel: [35987.476205] char_ddriver : Opened
+Mar 21 11:30:57 ubuntu kernel: [35990.650704] char_ddriver : previous data is 
+Mar 21 11:30:57 ubuntu kernel: [35990.650713] char_ddriver : Data received : hello , Data Size: 5
+Mar 21 11:30:58 ubuntu kernel: [35991.425957] char_ddriver : Data inside data buffer : hello , Data Size: 5
+Mar 21 11:30:58 ubuntu kernel: [35991.425964] char_ddriver : Sent 5 chars to user
+Mar 21 11:31:02 ubuntu kernel: [35995.585459] char_ddriver : previous data is 
+Mar 21 11:31:02 ubuntu kernel: [35995.585467] char_ddriver : Data received : hi , Data Size: 2
+Mar 21 11:31:02 ubuntu kernel: [35995.585475] char_ddriver : Data inside data buffer : hi , Data Size: 2
+Mar 21 11:31:02 ubuntu kernel: [35995.585656] char_ddriver : Device released
+Mar 21 11:31:29 ubuntu kernel: [36022.637021] char_ddriver : module cleanup
+```
+
+- GIF
+
+<html>
+    <p align="center">
+        <a href="#">
+            <img src="./assets/render1616306510649.gif">
+        </a>
+    </p>
+</html>
+
 ### Removal of module
 
 ```
