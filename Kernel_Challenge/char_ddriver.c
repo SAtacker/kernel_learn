@@ -105,9 +105,18 @@ static int c_release(struct inode *iptr,struct file *fptr)
     return 0;
 }
 
-static unsigned char* get_chksum(char *data,char *chk)
+static int get_chksum(char *data)
 {
-//
+    printk(KERN_INFO"%s : Getting checksum\n",DEVICE_NAME);
+    int chk = 0;
+    int len = strlen(data) , i=0;
+    for (i = 0; i < len; i++)
+    {
+        chk += data[i]<<8;
+    }
+    printk(KERN_INFO"%s : Checksum is %d\n",DEVICE_NAME,chk);
+    return chk;
+
 }
 
 static long device_ioctl(struct file *filep, unsigned int cmd, long unsigned int arg) 
@@ -116,6 +125,9 @@ static long device_ioctl(struct file *filep, unsigned int cmd, long unsigned int
     {
         case RD_VALUE:
             printk(KERN_INFO"%s : Data inside data buffer : %s , Data Size: %d\n",DEVICE_NAME,data,_data_size);
+            _chk = 0;
+            _chk = get_chksum(data);
+            sprintf(data,"%d",_chk);
             copy_to_user((char*)arg,data,_data_size);
             _data_size=0;
             break;
