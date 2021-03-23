@@ -100,7 +100,7 @@ static long device_ioctl(struct file *, unsigned int, long unsigned int);
 
 /**
  * @brief Get the simplest possible checksum of the characters 
- * 
+ * @param data A pointer to a data buffer
  * @return int returns the checksum
  */
 static int get_chksum(char *);
