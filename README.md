@@ -81,6 +81,6 @@ sudo rmmod char_ddriver
 ### Further additions
 
 - [x] IOCTL calls 
-- [ ] Checksum Function
+- [x] Simplest Checksum Function
 - [ ] Procfs entry
 - [ ] Task 2
