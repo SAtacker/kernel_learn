@@ -40,6 +40,16 @@ The userspace program initially opens the device `/dev/char_ddriver` and sends t
 
 ### Output
 
+- Terminal Output
+
+<html>
+    <p align="center">
+        <a href="#terminal">
+            <img src="./assets/carbon.png">
+        </a>
+    </p>
+</html>
+
 - GIF
 
 <html>
@@ -49,6 +59,8 @@ The userspace program initially opens the device `/dev/char_ddriver` and sends t
         </a>
     </p>
 </html>
+
+
 
 ### Removal of module
 
@@ -60,5 +72,5 @@ sudo rmmod char_ddriver
 
 - [x] IOCTL calls 
 - [x] Simplest Checksum Function
-- [ ] Procfs entry
+- [x] Procfs entry
 - [ ] Task 2
