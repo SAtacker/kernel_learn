@@ -85,9 +85,9 @@ static int c_open(struct inode *iptr, struct file *fptr)
 }
 
 static ssize_t c_read(struct file *fptr, char *buffer, size_t len, loff_t *off)
-{   
-    if(*off==0)
-    {    
+{
+    if (*off == 0)
+    {
         ssize_t ret = 0;
         _chk = 0;
         _chk = get_chksum(data);
@@ -100,7 +100,7 @@ static ssize_t c_read(struct file *fptr, char *buffer, size_t len, loff_t *off)
             printk(KERN_INFO "%s : Sent %d chars to user\n", DEVICE_NAME, _data_size);
             ret = _data_size;
             _data_size = 0;
-            memset((void*)data,'\0',_MAX_DATA_);
+            memset((void *)data, '\0', _MAX_DATA_);
             (*off)++;
             return ret;
         }
@@ -124,7 +124,7 @@ static ssize_t c_write(struct file *fptr, const char __user *buffer, size_t len,
     }
     else if (*off == 0)
     {
-        memset((void*)data,'\0',_MAX_DATA_);
+        memset((void *)data, '\0', _MAX_DATA_);
         printk(KERN_INFO "%s : previous data is %s\n", DEVICE_NAME, data);
         if (copy_from_user(data, buffer, len) != 0)
         {
@@ -168,13 +168,13 @@ static long device_ioctl(struct file *filep, unsigned int cmd, long unsigned int
         sprintf(data, "Checksum : [%x]\0", _chk);
         _data_size = strlen(data);
         copy_to_user((char *)arg, data, _data_size);
-        memset((void*)data,'\0',_MAX_DATA_);
+        memset((void *)data, '\0', _MAX_DATA_);
         ret = _data_size;
         _data_size = 0;
         break;
 
     case WR_VALUE:
-        memset((void*)data,'\0',_MAX_DATA_);
+        memset((void *)data, '\0', _MAX_DATA_);
         printk(KERN_INFO "%s : previous data is %s\n", DEVICE_NAME, data);
         copy_from_user(data, (char *)arg, _MAX_DATA_);
         _data_size = strlen(data);
