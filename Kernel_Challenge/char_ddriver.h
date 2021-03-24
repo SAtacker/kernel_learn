@@ -12,6 +12,7 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/fs.h>
+#include <linux/proc_fs.h>
 #include <linux/uaccess.h>
 #include <linux/device.h>
 
@@ -50,6 +51,7 @@ static short _data_size;
  * 
  */
 static int _chk = 0;
+module_param(_chk,int,0440);
 
 /**
  * @brief This is the class of driver , udev creates a node in /dev with this 
@@ -62,6 +64,12 @@ static struct class *cdd_class = NULL;
  * 
  */
 static struct device *cdd = NULL;
+
+/**
+ * @brief create proc entry with device name , mode and parent
+ * 
+ */
+static struct proc_dir_entry *ent;
 
 /**
  * @brief This is the device open function 

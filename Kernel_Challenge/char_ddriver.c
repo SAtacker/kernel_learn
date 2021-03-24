@@ -17,11 +17,19 @@
  */
 static struct file_operations fops =
     {
+        .owner = THIS_MODULE,
         .open = c_open,
         .read = c_read,
         .write = c_write,
         .release = c_release,
         .unlocked_ioctl = device_ioctl,
+};
+
+static struct proc_ops pops =
+    {
+        .proc_open = c_open,
+        .proc_read = c_read,
+        .proc_write = c_write,
 };
 
 static int __init cdd_init(void)
@@ -34,6 +42,11 @@ static int __init cdd_init(void)
         return major_num;
     }
     printk(KERN_INFO "%s : Registered with major number %d\n", DEVICE_NAME, major_num);
+    ent = proc_create(DEVICE_NAME, 0660, NULL, &pops);
+    if (ent == NULL)
+    {
+        return -ENOMEM;
+    }
     cdd_class = class_create(THIS_MODULE, CLASS_NAME);
     if (IS_ERR(cdd_class))
     {
@@ -59,6 +72,7 @@ static void __exit cdd_clean(void)
     class_unregister(cdd_class);
     class_destroy(cdd_class);
     unregister_chrdev(major_num, DEVICE_NAME);
+    proc_remove(ent);
     printk(KERN_INFO "%s : module cleanup\n", DEVICE_NAME);
 }
 
@@ -133,7 +147,7 @@ static long device_ioctl(struct file *filep, unsigned int cmd, long unsigned int
         printk(KERN_INFO "%s : Data inside data buffer : %s , Data Size: %d\n", DEVICE_NAME, data, _data_size);
         _chk = 0;
         _chk = get_chksum(data);
-        sprintf(data, "%d", _chk);
+        sprintf(data, "\nChecksum : [%d]\n", _chk);
         copy_to_user((char *)arg, data, _data_size);
         _data_size = 0;
         break;
