@@ -35,7 +35,7 @@ int main()
         return errno;
     }
 
-    printf("Send Buffer\t\t\t\t\t : ");
+    printf("Send Buffer\t\t\t\t : ");
 
     scanf("%[^\n]%*c", _send_buf);
     printf("Writing\t\t\t\t\t : [%s]\n", _send_buf);
@@ -58,23 +58,23 @@ int main()
         return errno;
     }
 
-    printf("LKM\t\t\t\t\t\t : [%s]\n", _rec_buf);
+    printf("LKM\t\t\t\t\t : [%s]\n", _rec_buf);
 
     memset(_rec_buf, '\0', sizeof(_rec_buf));
     memset(_send_buf, '\0', sizeof(_send_buf));
 
     printf("\n=============== IOCTL ==================\n");
 
-    printf("Enter Value\t\t\t\t\t : ");
+    printf("Enter Value\t\t\t\t : ");
     scanf("%[^\n]%*c", _send_buf);
-    printf("IOCTL Write\t\t\t\t\t : [%s]\n", _send_buf);
+    printf("IOCTL Write\t\t\t\t : [%s]\n", _send_buf);
     ioctl(fd, WR_VALUE, (char *)_send_buf);
 
     printf("ENTER to read");
     getchar();
     printf("Reading\n");
     ioctl(fd, RD_VALUE, (char *)_rec_buf);
-    printf("IOCTL Read\t\t\t\t\t : [%s]\n", _rec_buf);
+    printf("IOCTL Read\t\t\t\t : [%s]\n", _rec_buf);
 
     return 0;
 }
