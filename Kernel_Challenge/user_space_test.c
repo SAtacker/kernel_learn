@@ -38,7 +38,7 @@ int main()
     printf("Send Buffer\t\t\t\t\t : ");
 
     scanf("%[^\n]%*c", _send_buf);
-    printf("Writing to the device [%s].\n", _send_buf);
+    printf("Writing\t\t\t\t\t : [%s]\n", _send_buf);
 
     ret = write(fd, _send_buf, strlen(_send_buf));
     if (ret < 0)
