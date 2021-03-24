@@ -35,7 +35,7 @@ int main()
         return errno;
     }
 
-    printf("Send Buffer:\n");
+    printf("Send Buffer\t\t\t\t\t\t:\t");
 
     scanf("%[^\n]%*c", _send_buf);
     printf("Writing to the device [%s].\n", _send_buf);
@@ -47,7 +47,7 @@ int main()
         return errno;
     }
 
-    printf("ENTER to read\n");
+    printf("ENTER to read");
     getchar();
     printf("Reading\n");
 
@@ -58,23 +58,23 @@ int main()
         return errno;
     }
 
-    printf("Message from LKM [%s]\n", _rec_buf);
+    printf("LKM\t\t\t\t\t\t :\t[%s]\n", _rec_buf);
 
     memset(_rec_buf, '\0', sizeof(_rec_buf));
     memset(_send_buf, '\0', sizeof(_send_buf));
 
-    printf("=============== IOCTL ==================\n");
+    printf("\n=============== IOCTL ==================\n");
 
-    printf("Enter the Value to send\n");
+    printf("Enter Value\t\t\t\t\t :\t");
     scanf("%[^\n]%*c", _send_buf);
-    printf("Writing Value to Driver\n");
+    printf("IOCTL Write\t\t\t\t\t :\t[%s]\n", _send_buf);
     ioctl(fd, WR_VALUE, (char *)_send_buf);
 
-    printf("ENTER to read\n");
+    printf("ENTER to read");
     getchar();
     printf("Reading\n");
     ioctl(fd, RD_VALUE, (char *)_rec_buf);
-    printf("Value is %s\n", _rec_buf);
+    printf("IOCTL Read\t\t\t\t\t\t:\t[%s]\n", _rec_buf);
 
     return 0;
 }

@@ -86,6 +86,10 @@ static int c_open(struct inode *iptr, struct file *fptr)
 static ssize_t c_read(struct file *fptr, char *buffer, size_t len, loff_t *off)
 {
     ssize_t ret = 0;
+    _chk = 0;
+    _chk = get_chksum(data);
+    sprintf(data, "Checksum : [%x]", _chk);
+    _data_size = strlen(data);
     int err_cnt = copy_to_user(buffer, data, _data_size);
     printk(KERN_INFO "%s : Data inside data buffer : %s , Data Size: %d\n", DEVICE_NAME, data, _data_size);
     if (err_cnt == 0)
@@ -144,14 +148,15 @@ static int get_chksum(char *data)
 
 static long device_ioctl(struct file *filep, unsigned int cmd, long unsigned int arg)
 {
-    long ret=0;
+    long ret = 0;
     switch (cmd)
     {
     case RD_VALUE:
         printk(KERN_INFO "%s : Data inside data buffer : %s , Data Size: %d\n", DEVICE_NAME, data, _data_size);
         _chk = 0;
         _chk = get_chksum(data);
-        sprintf(data, "\nChecksum : [%d]\n", _chk);
+        sprintf(data, "Checksum : [%x]", _chk);
+        _data_size = strlen(data);
         copy_to_user((char *)arg, data, _data_size);
         ret = _data_size;
         _data_size = 0;
