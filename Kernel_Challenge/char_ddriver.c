@@ -30,6 +30,7 @@ static struct proc_ops pops =
         .proc_open = c_open,
         .proc_read = c_read,
         .proc_write = c_write,
+        .proc_release = c_release,
 };
 
 static int __init cdd_init(void)
