@@ -84,25 +84,34 @@ static int c_open(struct inode *iptr, struct file *fptr)
 }
 
 static ssize_t c_read(struct file *fptr, char *buffer, size_t len, loff_t *off)
-{
-    ssize_t ret = 0;
-    _chk = 0;
-    _chk = get_chksum(data);
-    sprintf(data, "Checksum : [%x]", _chk);
-    _data_size = strlen(data);
-    int err_cnt = copy_to_user(buffer, data, _data_size);
-    printk(KERN_INFO "%s : Data inside data buffer : %s , Data Size: %d\n", DEVICE_NAME, data, _data_size);
-    if (err_cnt == 0)
-    {
-        printk(KERN_INFO "%s : Sent %d chars to user\n", DEVICE_NAME, _data_size);
-        ret = _data_size;
-        _data_size = 0;
-        return ret;
+{   
+    if(*off==0)
+    {    
+        ssize_t ret = 0;
+        _chk = 0;
+        _chk = get_chksum(data);
+        sprintf(data, "Checksum : [%x]\0", _chk);
+        _data_size = strlen(data);
+        int err_cnt = copy_to_user(buffer, data, _data_size);
+        printk(KERN_INFO "%s : Data inside data buffer : %s , Data Size: %d\n", DEVICE_NAME, data, _data_size);
+        if (err_cnt == 0)
+        {
+            printk(KERN_INFO "%s : Sent %d chars to user\n", DEVICE_NAME, _data_size);
+            ret = _data_size;
+            _data_size = 0;
+            strcpy(data,"");
+            (*off)++;
+            return ret;
+        }
+        else
+        {
+            printk(KERN_INFO "%s : Failed to send %d chars\n", DEVICE_NAME, _data_size);
+            return -EFAULT;
+        }
     }
     else
     {
-        printk(KERN_INFO "%s : Failed to send %d chars\n", DEVICE_NAME, _data_size);
-        return -EFAULT;
+        return 0;
     }
 }
 
@@ -155,9 +164,10 @@ static long device_ioctl(struct file *filep, unsigned int cmd, long unsigned int
         printk(KERN_INFO "%s : Data inside data buffer : %s , Data Size: %d\n", DEVICE_NAME, data, _data_size);
         _chk = 0;
         _chk = get_chksum(data);
-        sprintf(data, "Checksum : [%x]", _chk);
+        sprintf(data, "Checksum : [%x]\0", _chk);
         _data_size = strlen(data);
         copy_to_user((char *)arg, data, _data_size);
+        strcpy(data,"");
         ret = _data_size;
         _data_size = 0;
         break;
