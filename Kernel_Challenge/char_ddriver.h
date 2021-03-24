@@ -51,7 +51,7 @@ static short _data_size;
  * 
  */
 static int _chk = 0;
-module_param(_chk,int,0440);
+module_param(_chk,int,0660);
 
 /**
  * @brief This is the class of driver , udev creates a node in /dev with this 

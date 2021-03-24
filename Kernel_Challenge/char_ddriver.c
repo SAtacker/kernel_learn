@@ -85,12 +85,15 @@ static int c_open(struct inode *iptr, struct file *fptr)
 
 static ssize_t c_read(struct file *fptr, char *buffer, size_t len, loff_t *off)
 {
+    ssize_t ret = 0;
     int err_cnt = copy_to_user(buffer, data, _data_size);
     printk(KERN_INFO "%s : Data inside data buffer : %s , Data Size: %d\n", DEVICE_NAME, data, _data_size);
     if (err_cnt == 0)
     {
         printk(KERN_INFO "%s : Sent %d chars to user\n", DEVICE_NAME, _data_size);
-        return _data_size = 0;
+        ret = _data_size;
+        _data_size = 0;
+        return ret;
     }
     else
     {
@@ -141,6 +144,7 @@ static int get_chksum(char *data)
 
 static long device_ioctl(struct file *filep, unsigned int cmd, long unsigned int arg)
 {
+    long ret=0;
     switch (cmd)
     {
     case RD_VALUE:
@@ -149,6 +153,7 @@ static long device_ioctl(struct file *filep, unsigned int cmd, long unsigned int
         _chk = get_chksum(data);
         sprintf(data, "\nChecksum : [%d]\n", _chk);
         copy_to_user((char *)arg, data, _data_size);
+        ret = _data_size;
         _data_size = 0;
         break;
 
@@ -163,7 +168,7 @@ static long device_ioctl(struct file *filep, unsigned int cmd, long unsigned int
     default:
         return -ENOTTY;
     }
-    return 0;
+    return ret;
 }
 
 module_init(cdd_init);
